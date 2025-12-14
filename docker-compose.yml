@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:14-alpine
+    container_name: interview_postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: interview_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - interview_net
+
+  redis:
+    image: redis:7-alpine
+    container_name: interview_redis
+    ports:
+      - "6379:6379"
+    networks:
+      - interview_net
+
+  # Services will be uncommented as we build them
+  # backend:
+  #   build: ./backend
+  #   ports:
+  #     - "8080:8080"
+  #   depends_on:
+  #     - postgres
+  #     - redis
+  #   networks:
+  #     - interview_net
+
+  # frontend:
+  #   build: ./frontend
+  #   ports:
+  #     - "3000:3000"
+  #   networks:
+  #     - interview_net
+
+  # ai-service:
+  #   build: ./ai_service
+  #   ports:
+  #     - "8000:8000"
+  #   networks:
+  #     - interview_net
+
+networks:
+  interview_net:
+    driver: bridge
+
+volumes:
+  postgres_data:
