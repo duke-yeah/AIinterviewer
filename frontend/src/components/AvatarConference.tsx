@@ -1,45 +1,47 @@
 import React from 'react';
 import { Card, Typography } from 'antd';
-import Avatar3D from './Avatar3D';
+import AIAvatarVideo from './AIAvatarVideo';
 import ErrorBoundary from './ErrorBoundary';
 
-const { Title, Text } = Typography;
+const { Title } = Typography;
 
 interface AvatarConferenceProps {
-  audioStream: MediaStream | null;
-  isSpeaking: boolean;
+  onSessionId: (id: string) => void;
+  onLLMMessage: (text: string) => void;
 }
 
-const AvatarConference: React.FC<AvatarConferenceProps> = ({ audioStream, isSpeaking }) => {
+const AvatarConference: React.FC<AvatarConferenceProps> = ({ onSessionId, onLLMMessage }) => {
   return (
-    <Card 
-      style={{ 
-        height: '100%', 
-        display: 'flex', 
-        flexDirection: 'column', 
-        backgroundColor: '#000' 
-      }} 
-      bodyStyle={{ 
-        flex: 1, 
-        display: 'flex', 
-        flexDirection: 'column', 
-        justifyContent: 'center', 
-        alignItems: 'center',
-        padding: 0
+    <Card
+      style={{
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        backgroundColor: '#000'
+      }}
+      styles={{
+        body: {
+          flex: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          padding: 0
+        }
       }}
     >
-      <div style={{ 
-        position: 'relative', 
-        width: '100%', 
-        height: '100%', 
-        display: 'flex', 
-        justifyContent: 'center', 
-        alignItems: 'center' 
+      <div style={{
+        position: 'relative',
+        width: '100%',
+        height: '100%',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center'
       }}>
         <ErrorBoundary>
-          <Avatar3D audioStream={audioStream} isSpeaking={isSpeaking} />
+          <AIAvatarVideo onSessionId={onSessionId} onLLMMessage={onLLMMessage} />
         </ErrorBoundary>
-        
+
         <div style={{
           position: 'absolute',
           bottom: '20px',
@@ -49,9 +51,6 @@ const AvatarConference: React.FC<AvatarConferenceProps> = ({ audioStream, isSpea
           borderRadius: '4px'
         }}>
           <Title level={5} style={{ color: '#fff', margin: 0 }}>AI 面试官</Title>
-          <Text style={{ color: 'rgba(255,255,255,0.7)' }}>
-            {isSpeaking ? '正在说话...' : '正在聆听...'}
-          </Text>
         </div>
       </div>
     </Card>
